@@ -78,17 +78,48 @@ public class Ajedrez {
         }
     }
     
-    public static String seleccionarPieza(String [][] tablero, 
-            String piezaActiva, Scanner scan){
-        System.out.println("FILA y COLUMNA PIEZA: ");
-        final int [] FILA = {0,1,2,3,4,5,6,7};
-        final int [] COLUMNA = {0,1,2,3,4,5,6,7};
-        piezaActiva = FILA + " " + COLUMNA;
-        String piezaSelect = scan.nextLine();
-//        switch(piezaActiva){
-//            case FILA: 
-//        }
-        return piezaActiva;
+    public static int[] seleccionarPieza(String [][] tablero,Scanner scan){
+        String celdaSeleccionada = null;
+        boolean piezaValida = false;
+        int f = -1;
+        int c = -1;
+        
+        while(!piezaValida){
+            System.out.println("FILA y COLUMNA PIEZA: ");
+            //Usamos trim para borrar espacios al principio y final
+            String entradaUsuario = scan.nextLine().trim();
+            // --- AHORA USAMOS indexOf y charAt / substring ---
+            //Buscamos la posicion del primer espacio:
+            int posicionEspacio = entradaUsuario.indexOf(" ");
+            if(entradaUsuario.length() >= 3 && //Comprobar longitud del string si tiene 3 caracteres
+                    posicionEspacio != -1){ //Comprobar posicion con espacio
+                System.out.println("Coordenadas correctas");
+                piezaValida = true;
+            } else {
+                System.out.println("Error: Vuelve a intentarlo. Introduce fila + espacio + columna");
+                continue;
+            }
+            
+        }
+        //Extraemos fila y columna
+        String fila = celdaSeleccionada.substring(0,1);
+        String columna = celdaSeleccionada.substring(2);
+        f = Integer.parseInt(fila);
+        f = Integer.parseInt(columna);
+        System.out.println("La fila extraida es: " + fila);
+        System.out.println("La columna extraida es: " + columna);
+        for(String[] aux:tablero){
+            for(String celda:aux){
+                if(celda.contains(" . ")){
+                    System.out.println("No hay ninguna pieza");
+                } else {
+                    System.out.println("Pieza seleccionada: " + celda);
+                }
+            }
+        }
+        //Devolver posicion, al final recogemos en el main:
+        // Falta: int[] posOrigen = seleccionarPieza(tablero, turnoActual, mainScan);
+        return new int[] {f,c};
     }
     
     public static void main(String[] args) {
@@ -98,6 +129,7 @@ public class Ajedrez {
         
         iniciarTablero(tablero);
         mostrarTablero(tablero);
+        int[] posicion = seleccionarPieza(tablero,scan);
         
         scan.close();
     }
