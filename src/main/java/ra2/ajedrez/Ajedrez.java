@@ -4,6 +4,7 @@
 
 package ra2.ajedrez;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -64,6 +65,7 @@ public class Ajedrez {
                 System.out.print(celda + " ");
             }
         }
+        System.out.println();
     }    
     
     public static void verificarTablero(String[][] tablero){
@@ -88,6 +90,8 @@ public class Ajedrez {
             System.out.println("FILA y COLUMNA PIEZA: ");
             //Usamos trim para borrar espacios al principio y final
             String entradaUsuario = scan.nextLine().trim();
+            //Cambiamos el valor null al de entradaUsuario
+            celdaSeleccionada = entradaUsuario;
             // --- AHORA USAMOS indexOf y charAt / substring ---
             //Buscamos la posicion del primer espacio:
             int posicionEspacio = entradaUsuario.indexOf(" ");
@@ -103,23 +107,26 @@ public class Ajedrez {
         }
         //Extraemos fila y columna
         String fila = celdaSeleccionada.substring(0,1);
-        String columna = celdaSeleccionada.substring(2);
+        String columna = celdaSeleccionada.substring(2,3);
         f = Integer.parseInt(fila);
-        f = Integer.parseInt(columna);
+        c = Integer.parseInt(columna);
         System.out.println("La fila extraida es: " + fila);
         System.out.println("La columna extraida es: " + columna);
-        for(String[] aux:tablero){
-            for(String celda:aux){
-                if(celda.contains(" . ")){
+        if(tablero[f][c].contains(" . ")){
                     System.out.println("No hay ninguna pieza");
-                } else {
-                    System.out.println("Pieza seleccionada: " + celda);
-                }
-            }
+        } else {
+            System.out.println("Pieza seleccionada: " + tablero[f][c]);
         }
+
         //Devolver posicion, al final recogemos en el main:
         // Falta: int[] posOrigen = seleccionarPieza(tablero, turnoActual, mainScan);
         return new int[] {f,c};
+    }
+    
+    public static void imprimirTablero(String [][] tablero){
+        for (String[] fila:tablero){
+            System.out.println(Arrays.toString(fila));            
+        }
     }
     
     public static void main(String[] args) {
@@ -130,6 +137,7 @@ public class Ajedrez {
         iniciarTablero(tablero);
         mostrarTablero(tablero);
         int[] posicion = seleccionarPieza(tablero,scan);
+        imprimirTablero(tablero);
         
         scan.close();
     }
